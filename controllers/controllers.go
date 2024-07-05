@@ -28,3 +28,27 @@ func ShowPersonalities(w http.ResponseWriter, r *http.Request) {
 	database.DB.First(&personality, id)
 	json.NewEncoder(w).Encode(personality)
 }
+
+func CreatePersonalities(w http.ResponseWriter, r *http.Request) {
+	var personality models.Personality
+	json.NewDecoder(r.Body).Decode(&personality)
+	database.DB.Create(&personality)
+	json.NewEncoder(w).Encode(personality)
+}
+
+func DeletePersonalities(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	var personality models.Personality
+	database.DB.Delete(&personality, id)
+}
+
+func UpdatePersonalities(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	var personality models.Personality
+	database.DB.First(&personality, id)
+	json.NewDecoder(r.Body).Decode(&personality)
+	database.DB.Save(&personality)
+	json.NewEncoder(w).Encode(personality)
+}
